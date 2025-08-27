@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSW - NREL EMAPS Inspection Checklist (Enhanced)</title>
+    <style>
+        @media print {
+            .no-print { display: none; }
+            body { margin: 0; }
+            .page-break { page-break-before: always; }
+            input[type="checkbox"] { 
+                appearance: none;
+                width: 12px;
+                height: 12px;
+                border: 1px solid #000;
+                margin-right: 8px;
+                vertical-align: middle;
+            }
+            .photo-upload-section { display: none; }
+            .photo-thumbnail { max-width: 200px; }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 0;
+        }
+        
+        .company-name {
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .checklist-title {
+            font-size: 22px;
+            font-weight: normal;
+            opacity: 0.95;
+        }
+        
+        .project-info {
+            background: white;
+            padding: 25px;
+            border-left: 4px solid #2a5298;
+            margin: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 150px;
+        }
+        
+        .info-input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 14px;
+            background: #f9f9f9;
+            transition: all 0.3s;
+        }
+        
+        .info-input:focus {
+            background: white;
+            border-color: #2a5298;
+            outline: none;
+            box-shadow: 0 0 5px rgba(42, 82, 152, 0.2);
+        }
+        
+        .section {
+            background: white;
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            background: #2a5298;
+            color: white;
+            padding: 12px 20px;
+            margin: -25px -25px 20px;
+            border-radius: 8px 8px 0 0;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .photo-button {
+            background: white;
+            color: #2a5298;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: normal;
+        }
+        
+        .photo-button:hover {
+            background: #f0f7ff;
+        }
+        
+        .subsection {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 3px solid #2a5298;
+            position: relative;
+        }
+        
+        .subsection-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2a5298;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .add-photo-btn {
+            background: #28a745;
+            color: white;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .add-photo-btn:hover {
+            background: #218838;
+        }
+        
+        .checklist-item {
+            margin: 10px 0;
+            display: flex;
+            align-items: flex-start;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .checklist-item:hover {
+            background: #f0f7ff;
+        }
+        
+        .checklist-item-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checklist-notes {
+            width: 200px;
+            margin-left: 20px;
+        }
+        
+        .notes-input {
+            width: 100%;
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            background: white;
+        }
+        
+        .notes-input:focus {
+            border-color: #2a5298;
+            outline: none;
+        }
+        
+        input[type="checkbox"] {
+            margin-right: 10px;
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #2a5298;
+        }
+        
+        .checklist-label {
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .photo-upload-section {
+            background: #e8f4ff;
+            border: 2px dashed #2a5298;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .photo-upload-section.active {
+            display: block;
+        }
+        
+        .photo-upload-area {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .upload-input {
+            display: none;
+        }
+        
+        .upload-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #2a5298;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .upload-label:hover {
+            background: #1e3c72;
+        }
+        
+        .photo-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .photo-preview {
+            position: relative;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            background: white;
+        }
+        
+        .photo-preview img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .photo-caption {
+            padding: 5px;
+            font-size: 11px;
+            background: #f9f9f9;
+        }
+        
+        .photo-caption input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 11px;
+        }
+        
+        .remove-photo {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .signature-section {
+            background: white;
+            margin: 30px 0;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 2px solid #2a5298;
+        }
+        
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        
+        .signature-block {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 4px;
+            background: #fcfcfc;
+        }
+        
+        .signature-title {
+            font-weight: bold;
+            color: #2a5298;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .signature-field {
+            margin: 10px 0;
+        }
+        
+        .signature-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .signature-canvas {
+            border: 1px solid #999;
+            background: white;
+            margin: 10px 0;
+            cursor: crosshair;
+            touch-action: none;
+        }
+        
+        .clear-signature {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .notes-section {
+            background: #fffef0;
+            border: 1px solid #e0d090;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .notes-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        
+        .notes-area {
+            width: 100%;
+            min-height: 150px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-family: inherit;
+            resize: vertical;
+            border-radius: 4px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background: #2a5298;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        td input {
+            width: 100%;
+            border: none;
+            padding: 4px;
+            background: transparent;
+        }
+        
+        td input:focus {
+            background: white;
+            outline: 2px solid #2a5298;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #28a745;
+            color: white;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .badge.required {
+            background: #dc3545;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 12px;
+            margin-top: 40px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .action-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .action-button {
+            background: #2a5298;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        
+        .action-button:hover {
+            background: #1e3c72;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+        }
+        
+        .action-button.save {
+            background: #28a745;
+        }
+        
+        .action-button.save:hover {
+            background: #218838;
+        }
+        
+        .photo-counter {
+            background: #ffc107;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            height: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #28a745, #20c997);
+            height: 100%;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="action-buttons no-print">
+        <button class="action-button save" onclick="saveToFile()">💾 Save Progress</button>
+        <button class="action-button" onclick="window.print()">🖨️ Print Checklist</button>
+        <button class="action-button" onclick="exportData()">📤 Export Data</button>
+    </div>
+    
+    <div class="header">
+        <div class="company-name">FLAWLESS STEEL WELDING, LLC</div>
+        <div class="checklist-title">PRE-RELEASE STRUCTURAL INSPECTION CHECKLIST</div>
+    </div>
+    
+    <div class="progress-bar no-print">
+        <div class="progress-fill" id="progressBar">0% Complete</div>
+    </div>
+    
+    <div class="project-info">
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Project:</span>
+                <input type="text" class="info-input" value="NREL EMAPS" placeholder="Project name">
+            </div>
+            <div class="info-item">
+                <span class="info-label">Location:</span>
+                <input type="text" class="info-input" value="Golden, Colorado" placeholder="Location">
+            </div>
+            <div class="info-item">
+                <span class="info-label">Inspector:</span>
+                <input type="text" class="info-input" placeholder="Enter inspector name">
+            </div>
+            <div class="info-item">
+                <span class="info-label">Date:</span>
+                <input type="date" class="info-input">
+            </div>
+            <div class="info-item">
+                <span class="info-label">Welder Cert #:</span>
+                <input type="text" class="info-input" placeholder="Certification number">
+            </div>
+            <div class="info-item">
+                <span class="info-label">Weather:</span>
+                <input type="text" class="info-input" placeholder="Weather conditions">
+            </div>
+            <div class="info-item">
+                <span class="info-label">Temperature:</span>
+                <input type="number" class="info-input" placeholder="°F">
+            </div>
+            <div class="info-item">
+                <span class="info-label">Wind Speed:</span>
+                <input type="number" class="info-input" placeholder="mph">
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            SECTION 1 – STRUCTURAL WELDING & CONNECTIONS
+            <button class="photo-button no-print" onclick="togglePhotoSection('section1')">
+                📷 Add Photos <span class="photo-counter" id="section1-count">0</span>
+            </button>
+        </div>
+        
+        <div class="photo-upload-section" id="section1-photos">
+            <div class="photo-upload-area">
+                <input type="file" id="section1-upload" class="upload-input" accept="image/*" multiple onchange="handlePhotoUpload(event, 'section1')">
+                <label for="section1-upload" class="upload-label">
+                    📷 Click to Upload Photos or Take Pictures
+                </label>
+                <p style="margin-top: 10px; color: #666;">You can select multiple photos at once</p>
+            </div>
+            <div class="photo-preview-grid" id="section1-preview"></div>
+        </div>
+        
+        <div class="subsection">
+            <div class="subsection-title">
+                1.1 Weld Integrity
+                <button class="add-photo-btn no-print" onclick="document.getElementById('weld-integrity-upload').click()">
+                    + Add Photo
+                </button>
+                <input type="file" id="weld-integrity-upload" style="display: none;" accept="image/*" multiple onchange="handlePhotoUpload(event, 'weld-integrity')">
+            </div>
+            <div class="photo-preview-grid" id="weld-integrity-preview"></div>
+            
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="weld1" onchange="updateProgress()">
+                    <label for="weld1" class="checklist-label">All structural welds completed per approved WPS</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="WPS #" id="weld1-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="weld2" onchange="updateProgress()">
+                    <label for="weld2" class="checklist-label">Welds cleaned, free of slag/spatter, and visually inspected</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="weld2-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="weld3" onchange="updateProgress()">
+                    <label for="weld3" class="checklist-label">Closure plates installed and fully welded as shown on contract drawings</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="weld3-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="weld4" onchange="updateProgress()">
+                    <label for="weld4" class="checklist-label">No cracks, undercutting, porosity, or unapproved field modifications present</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="weld4-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="weld5" onchange="updateProgress()">
+                    <label for="weld5" class="checklist-label">All CJP/PJP welds conform to engineered detail, dimensions, and tolerances</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="weld5-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="weld6" onchange="updateProgress()">
+                    <label for="weld6" class="checklist-label">NDT completed (VT/UT/MPT as applicable), results recorded, and accepted <span class="badge required">HOLD POINT</span></label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="NDT Report #" id="weld6-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="weld7" onchange="updateProgress()">
+                    <label for="weld7" class="checklist-label">Weld sizes verified with appropriate gauges</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Gauge type" id="weld7-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="weld8" onchange="updateProgress()">
+                    <label for="weld8" class="checklist-label">All start/stop points ground smooth and blended</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="weld8-notes">
+                </div>
+            </div>
+        </div>
+        
+        <div class="subsection">
+            <div class="subsection-title">
+                1.2 Weld Documentation
+                <button class="add-photo-btn no-print" onclick="document.getElementById('weld-doc-upload').click()">
+                    + Add Photo
+                </button>
+                <input type="file" id="weld-doc-upload" style="display: none;" accept="image/*" multiple onchange="handlePhotoUpload(event, 'weld-doc')">
+            </div>
+            <div class="photo-preview-grid" id="weld-doc-preview"></div>
+            
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="doc1" onchange="updateProgress()">
+                    <label for="doc1" class="checklist-label">Welds marked and traceable to welder ID</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Welder IDs" id="doc1-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="doc2" onchange="updateProgress()">
+                    <label for="doc2" class="checklist-label">WPS posted and followed on-site</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Location" id="doc2-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="doc3" onchange="updateProgress()">
+                    <label for="doc3" class="checklist-label">Field weld logs updated and complete</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Log #" id="doc3-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="doc4" onchange="updateProgress()">
+                    <label for="doc4" class="checklist-label">Material Test Reports (MTRs) verified</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="MTR #s" id="doc4-notes">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            SECTION 2 – BOLTING VERIFICATION
+            <button class="photo-button no-print" onclick="togglePhotoSection('section2')">
+                📷 Add Photos <span class="photo-counter" id="section2-count">0</span>
+            </button>
+        </div>
+        
+        <div class="photo-upload-section" id="section2-photos">
+            <div class="photo-upload-area">
+                <input type="file" id="section2-upload" class="upload-input" accept="image/*" multiple onchange="handlePhotoUpload(event, 'section2')">
+                <label for="section2-upload" class="upload-label">
+                    📷 Click to Upload Photos or Take Pictures
+                </label>
+            </div>
+            <div class="photo-preview-grid" id="section2-preview"></div>
+        </div>
+        
+        <div class="subsection">
+            <div class="subsection-title">2.1 Bolted Connections</div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="bolt1" onchange="updateProgress()">
+                    <label for="bolt1" class="checklist-label">All bolts installed per ASTM specification</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="ASTM spec" id="bolt1-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="bolt2" onchange="updateProgress()">
+                    <label for="bolt2" class="checklist-label">Bolt grades and lengths match erection drawings</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="bolt2-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="bolt3" onchange="updateProgress()">
+                    <label for="bolt3" class="checklist-label">Connections snug-tightened or pretensioned per RCSC</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Method" id="bolt3-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="bolt4" onchange="updateProgress()">
+                    <label for="bolt4" class="checklist-label">No missing bolts, nuts, or washers</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="bolt4-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="bolt5" onchange="updateProgress()">
+                    <label for="bolt5" class="checklist-label">Thread engagement verified (flush with nut minimum)</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="bolt5-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="bolt6" onchange="updateProgress()">
+                    <label for="bolt6" class="checklist-label">DTI/Skidmore tests completed <span class="badge">IF REQUIRED</span></label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Test results" id="bolt6-notes">
+                </div>
+            </div>
+        </div>
+        
+        <div class="subsection">
+            <div class="subsection-title">2.2 Torque Verification</div>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Bolt Type</th>
+                        <th>Required Pretension</th>
+                        <th>Actual</th>
+                        <th>Verified By</th>
+                        <th>Date</th>
+                    </tr>
+                    <tr>
+                        <td>A325</td>
+                        <td><input type="text" placeholder="kips"></td>
+                        <td><input type="text" placeholder="kips"></td>
+                        <td><input type="text" placeholder="Initials"></td>
+                        <td><input type="date"></td>
+                    </tr>
+                    <tr>
+                        <td>A490</td>
+                        <td><input type="text" placeholder="kips"></td>
+                        <td><input type="text" placeholder="kips"></td>
+                        <td><input type="text" placeholder="Initials"></td>
+                        <td><input type="date"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            SECTION 3 – DECKING & MISCELLANEOUS STEEL
+            <button class="photo-button no-print" onclick="togglePhotoSection('section3')">
+                📷 Add Photos <span class="photo-counter" id="section3-count">0</span>
+            </button>
+        </div>
+        
+        <div class="photo-upload-section" id="section3-photos">
+            <div class="photo-upload-area">
+                <input type="file" id="section3-upload" class="upload-input" accept="image/*" multiple onchange="handlePhotoUpload(event, 'section3')">
+                <label for="section3-upload" class="upload-label">
+                    📷 Click to Upload Photos or Take Pictures
+                </label>
+            </div>
+            <div class="photo-preview-grid" id="section3-preview"></div>
+        </div>
+        
+        <div class="checklist-item">
+            <div class="checklist-item-content">
+                <input type="checkbox" id="deck1" onchange="updateProgress()">
+                <label for="deck1" class="checklist-label">Deck panels secured with specified fasteners/welds</label>
+            </div>
+            <div class="checklist-notes">
+                <input type="text" class="notes-input" placeholder="Fastener type" id="deck1-notes">
+            </div>
+        </div>
+        <div class="checklist-item">
+            <div class="checklist-item-content">
+                <input type="checkbox" id="deck2" onchange="updateProgress()">
+                <label for="deck2" class="checklist-label">Closure angles/plates installed at perimeters</label>
+            </div>
+            <div class="checklist-notes">
+                <input type="text" class="notes-input" placeholder="Notes" id="deck2-notes">
+            </div>
+        </div>
+        <div class="checklist-item">
+            <div class="checklist-item-content">
+                <input type="checkbox" id="deck3" onchange="updateProgress()">
+                <label for="deck3" class="checklist-label">Shear studs inspected and accepted</label>
+            </div>
+            <div class="checklist-notes">
+                <input type="text" class="notes-input" placeholder="Count" id="deck3-notes">
+            </div>
+        </div>
+        <div class="checklist-item">
+            <div class="checklist-item-content">
+                <input type="checkbox" id="deck4" onchange="updateProgress()">
+                <label for="deck4" class="checklist-label">Edge angles and embed plates verified</label>
+            </div>
+            <div class="checklist-notes">
+                <input type="text" class="notes-input" placeholder="Notes" id="deck4-notes">
+            </div>
+        </div>
+        <div class="checklist-item">
+            <div class="checklist-item-content">
+                <input type="checkbox" id="deck5" onchange="updateProgress()">
+                <label for="deck5" class="checklist-label">Stair stringers and handrails checked</label>
+            </div>
+            <div class="checklist-notes">
+                <input type="text" class="notes-input" placeholder="Notes" id="deck5-notes">
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            SECTION 4 – SAFETY & HOUSEKEEPING
+            <button class="photo-button no-print" onclick="togglePhotoSection('section4')">
+                📷 Add Photos <span class="photo-counter" id="section4-count">0</span>
+            </button>
+        </div>
+        
+        <div class="photo-upload-section" id="section4-photos">
+            <div class="photo-upload-area">
+                <input type="file" id="section4-upload" class="upload-input" accept="image/*" multiple onchange="handlePhotoUpload(event, 'section4')">
+                <label for="section4-upload" class="upload-label">
+                    📷 Click to Upload Photos or Take Pictures
+                </label>
+            </div>
+            <div class="photo-preview-grid" id="section4-preview"></div>
+        </div>
+        
+        <div class="subsection">
+            <div class="subsection-title">4.1 Safety Compliance</div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="safety1" onchange="updateProgress()">
+                    <label for="safety1" class="checklist-label">All guardrails and fall protection reinstated <span class="badge required">CRITICAL</span></label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Type/location" id="safety1-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="safety2" onchange="updateProgress()">
+                    <label for="safety2" class="checklist-label">Temporary shoring/bracing removed per engineer's release</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Release #" id="safety2-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="safety3" onchange="updateProgress()">
+                    <label for="safety3" class="checklist-label">Openings covered/barricaded per OSHA §1926.760</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="safety3-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="safety4" onchange="updateProgress()">
+                    <label for="safety4" class="checklist-label">Hole covers labeled with load rating</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Rating" id="safety4-notes">
+                </div>
+            </div>
+        </div>
+        
+        <div class="subsection">
+            <div class="subsection-title">4.2 Site Cleanliness</div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="clean1" onchange="updateProgress()">
+                    <label for="clean1" class="checklist-label">All tools and consumables removed</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="clean1-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="clean2" onchange="updateProgress()">
+                    <label for="clean2" class="checklist-label">Area swept and staged for next trade</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Notes" id="clean2-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="clean3" onchange="updateProgress()">
+                    <label for="clean3" class="checklist-label">Hazardous waste properly disposed</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Disposal method" id="clean3-notes">
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checklist-item-content">
+                    <input type="checkbox" id="clean4" onchange="updateProgress()">
+                    <label for="clean4" class="checklist-label">Fire watch maintained post-welding</label>
+                </div>
+                <div class="checklist-notes">
+                    <input type="text" class="notes-input" placeholder="Duration" id="clean4-notes">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            HOLD POINT VERIFICATION
+            <button class="photo-button no-print" onclick="togglePhotoSection('holdpoints')">
+                📷 Add Photos <span class="photo-counter" id="holdpoints-count">0</span>
+            </button>
+        </div>
+        
+        <div class="photo-upload-section" id="holdpoints-photos">
+            <div class="photo-upload-area">
+                <input type="file" id="holdpoints-upload" class="upload-input" accept="image/*" multiple onchange="handlePhotoUpload(event, 'holdpoints')">
+                <label for="holdpoints-upload" class="upload-label">
+                    📷 Click to Upload Photos or Take Pictures
+                </label>
+            </div>
+            <div class="photo-preview-grid" id="holdpoints-preview"></div>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Hold Point</th>
+                    <th>Inspector</th>
+                    <th>Date</th>
+                    <th>Pass/Fail</th>
+                    <th>Comments</th>
+                </tr>
+                <tr>
+                    <td>Fit-up</td>
+                    <td><input type="text" placeholder="Name"></td>
+                    <td><input type="date"></td>
+                    <td>
+                        <select>
+                            <option value="">Select</option>
+                            <option value="pass">Pass</option>
+                            <option value="fail">Fail</option>
+                        </select>
+                    </td>
+                    <td><input type="text" placeholder="Notes"></td>
+                </tr>
+                <tr>
+                    <td>Root Pass</td>
+                    <td><input type="text" placeholder="Name"></td>
+                    <td><input type="date"></td>
+                    <td>
+                        <select>
+                            <option value="">Select</option>
+                            <option value="pass">Pass</option>
+                            <option value="fail">Fail</option>
+                        </select>
+                    </td>
+                    <td><input type="text" placeholder="Notes"></td>
+                </tr>
+                <tr>
+                    <td>Final Weld</td>
+                    <td><input type="text" placeholder="Name"></td>
+                    <td><input type="date"></td>
+                    <td>
+                        <select>
+                            <option value="">Select</option>
+                            <option value="pass">Pass</option>
+                            <option value="fail">Fail</option>
+                        </select>
+                    </td>
+                    <td><input type="text" placeholder="Notes"></td>
+                </tr>
+                <tr>
+                    <td>NDT</td>
+                    <td><input type="text" placeholder="Name"></td>
+                    <td><input type="date"></td>
+                    <td>
+                        <select>
+                            <option value="">Select</option>
+                            <option value="pass">Pass</option>
+                            <option value="fail">Fail</option>
+                        </select>
+                    </td>
+                    <td><input type="text" placeholder="Notes"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <div class="notes-section">
+        <div class="notes-title">GENERAL NOTES & OBSERVATIONS</div>
+        <textarea class="notes-area" placeholder="Document any special conditions, deviations, or observations..." id="generalNotes"></textarea>
+    </div>
+    
+    <div class="signature-section">
+        <h2 style="text-align: center; color: #2a5298; margin-bottom: 20px;">FINAL ACCEPTANCE & SIGN-OFF</h2>
+        
+        <div class="signature-grid">
+            <div class="signature-block">
+                <div class="signature-title">Foreman Sign-Off</div>
+                <div class="signature-field">
+                    <label>Name:</label>
+                    <input type="text" class="signature-input" id="foreman-name">
+                </div>
+                <div class="signature-field">
+                    <label>Signature:</label>
+                    <canvas id="foreman-signature" class="signature-canvas" width="300" height="100"></canvas>
+                    <button class="clear-signature" onclick="clearSignature('foreman-signature')">Clear</button>
+                </div>
+                <div class="signature-field">
+                    <label>Date:</label>
+                    <input type="date" class="signature-input" id="foreman-date">
+                </div>
+                <div class="signature-field">
+                    <label>Phone:</label>
+                    <input type="tel" class="signature-input" id="foreman-phone">
+                </div>
+            </div>
+            
+            <div class="signature-block">
+                <div class="signature-title">QC Representative</div>
+                <div class="signature-field">
+                    <label>Name:</label>
+                    <input type="text" class="signature-input" id="qc-name">
+                </div>
+                <div class="signature-field">
+                    <label>Signature:</label>
+                    <canvas id="qc-signature" class="signature-canvas" width="300" height="100"></canvas>
+                    <button class="clear-signature" onclick="clearSignature('qc-signature')">Clear</button>
+                </div>
+                <div class="signature-field">
+                    <label>Date:</label>
+                    <input type="date" class="signature-input" id="qc-date">
+                </div>
+                <div class="signature-field">
+                    <label>Cert #:</label>
+                    <input type="text" class="signature-input" id="qc-cert">
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <div class="signature-block">
+                <div class="signature-title">General Contractor Acceptance</div>
+                <div class="signature-field">
+                    <label>Name:</label>
+                    <input type="text" class="signature-input" id="gc-name">
+                </div>
+                <div class="signature-field">
+                    <label>Company:</label>
+                    <input type="text" class="signature-input" id="gc-company">
+                </div>
+                <div class="signature-field">
+                    <label>Signature:</label>
+                    <canvas id="gc-signature" class="signature-canvas" width="300" height="100"></canvas>
+                    <button class="clear-signature" onclick="clearSignature('gc-signature')">Clear</button>
+                </div>
+                <div class="signature-field">
+                    <label>Date:</label>
+                    <input type="date" class="signature-input" id="gc-date">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="warning-box">
+        IMPORTANT: No floor shall be released to follow-on trades without verification and sign-off by Foreman, QC Representative, and General Contractor. Submit completed checklist and all supporting documentation to FSW Project Manager within 24 hours of completion.
+    </div>
+    
+    <div class="section">
+        <div class="section-header">
+            REQUIRED ATTACHMENTS
+            <button class="photo-button no-print" onclick="togglePhotoSection('attachments')">
+                📷 Add Documents <span class="photo-counter" id="attachments-count">0</span>
+            </button>
+        </div>
+        
+        <div class="photo-upload-section" id="attachments-photos">
+            <div class="photo-upload-area">
+                <input type="file" id="attachments-upload" class="upload-input" accept="image/*,application/pdf" multiple onchange="handlePhotoUpload(event, 'attachments')">
+                <label for="attachments-upload" class="upload-label">
+                    📎 Click to Upload Documents
+                </label>
+                <p style="margin-top: 10px; color: #666;">Accept images and PDF files</p>
+            </div>
+            <div class="photo-preview-grid" id="attachments-preview"></div>
+        </div>
+        
+        <div class="checklist-item">
+            <input type="checkbox" id="att1" onchange="updateProgress()">
+            <label for="att1" class="checklist-label">WPS/PQR Documentation</label>
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox" id="att2" onchange="updateProgress()">
+            <label for="att2" class="checklist-label">NDT Reports</label>
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox" id="att3" onchange="updateProgress()">
+            <label for="att3" class="checklist-label">Bolt Torque Records</label>
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox" id="att4" onchange="updateProgress()">
+            <label for="att4" class="checklist-label">Material Test Reports (MTRs)</label>
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox" id="att5" onchange="updateProgress()">
+            <label for="att5" class="checklist-label">Photo Documentation Package</label>
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox" id="att6" onchange="updateProgress()">
+            <label for="att6" class="checklist-label">Calibration Certificates</label>
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox" id="att7" onchange="updateProgress()">
+            <label for="att7" class="checklist-label">As-Built Mark-ups</label>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p><strong>Document Control #:</strong> FSW-NREL-INSP-001 | <strong>Revision:</strong> 1.0 | <strong>Effective Date:</strong> <span id="currentDate"></span></p>
+        <p style="margin-top: 10px;">© 2024 Flawless Steel Welding, LLC - Proprietary and Confidential</p>
+    </div>
+    
+    <script>
+        // Photo storage
+        const photoData = {};
+        
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+        
+        // Initialize signature canvases
+        const signatureCanvases = ['foreman-signature', 'qc-signature', 'gc-signature'];
+        signatureCanvases.forEach(id => {
+            const canvas = document.getElementById(id);
+            const ctx = canvas.getContext('2d');
+            let drawing = false;
+            
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            // Touch events for mobile
+            canvas.addEventListener('touchstart', handleTouch);
+            canvas.addEventListener('touchmove', handleTouch);
+            canvas.addEventListener('touchend', stopDrawing);
+            
+            function startDrawing(e) {
+                drawing = true;
+                draw(e);
+            }
+            
+            function draw(e) {
+                if (!drawing) return;
+                
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = '#000';
+                
+                const rect = canvas.getBoundingClientRect();
+                ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            }
+            
+            function stopDrawing() {
+                if (!drawing) return;
+                drawing = false;
+                ctx.beginPath();
+                saveFormData();
+            }
+            
+            function handleTouch(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                                 e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            }
+        });
+        
+        function clearSignature(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            saveFormData();
+        }
+        
+        function togglePhotoSection(sectionId) {
+            const photoSection = document.getElementById(sectionId + '-photos');
+            photoSection.classList.toggle('active');
+        }
+        
+        function handlePhotoUpload(event, sectionId) {
+            const files = event.target.files;
+            const previewGrid = document.getElementById(sectionId + '-preview');
+            
+            if (!photoData[sectionId]) {
+                photoData[sectionId] = [];
+            }
+            
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const photoId = Date.now() + Math.random();
+                    photoData[sectionId].push({
+                        id: photoId,
+                        data: e.target.result,
+                        name: file.name,
+                        caption: ''
+                    });
+                    
+                    const photoDiv = document.createElement('div');
+                    photoDiv.className = 'photo-preview';
+                    photoDiv.innerHTML = `
+                        <img src="${e.target.result}" alt="${file.name}">
+                        <button class="remove-photo" onclick="removePhoto('${sectionId}', ${photoId})">×</button>
+                        <div class="photo-caption">
+                            <input type="text" placeholder="Add caption..." onchange="updateCaption('${sectionId}', ${photoId}, this.value)">
+                        </div>
+                    `;
+                    previewGrid.appendChild(photoDiv);
+                    
+                    updatePhotoCount(sectionId);
+                    saveFormData();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function removePhoto(sectionId, photoId) {
+            photoData[sectionId] = photoData[sectionId].filter(p => p.id !== photoId);
+            
+            const previewGrid = document.getElementById(sectionId + '-preview');
+            previewGrid.innerHTML = '';
+            
+            photoData[sectionId].forEach(photo => {
+                const photoDiv = document.createElement('div');
+                photoDiv.className = 'photo-preview';
+                photoDiv.innerHTML = `
+                    <img src="${photo.data}" alt="${photo.name}">
+                    <button class="remove-photo" onclick="removePhoto('${sectionId}', ${photo.id})">×</button>
+                    <div class="photo-caption">
+                        <input type="text" value="${photo.caption}" placeholder="Add caption..." onchange="updateCaption('${sectionId}', ${photo.id}, this.value)">
+                    </div>
+                `;
+                previewGrid.appendChild(photoDiv);
+            });
+            
+            updatePhotoCount(sectionId);
+            saveFormData();
+        }
+        
+        function updateCaption(sectionId, photoId, caption) {
+            const photo = photoData[sectionId].find(p => p.id === photoId);
+            if (photo) {
+                photo.caption = caption;
+                saveFormData();
+            }
+        }
+        
+        function updatePhotoCount(sectionId) {
+            const count = photoData[sectionId] ? photoData[sectionId].length : 0;
+            const counter = document.getElementById(sectionId + '-count');
+            if (counter) {
+                counter.textContent = count;
+            }
+        }
+        
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+            const percentage = Math.round((checked.length / checkboxes.length) * 100);
+            
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '% Complete';
+            
+            saveFormData();
+        }
+        
+        // Save form data to localStorage
+        function saveFormData() {
+            const formData = {
+                inputs: {},
+                checkboxes: {},
+                signatures: {},
+                photos: photoData,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save all input fields
+            document.querySelectorAll('input[type="text"], input[type="date"], input[type="number"], input[type="tel"], textarea, select').forEach(input => {
+                formData.inputs[input.id || input.name] = input.value;
+            });
+            
+            // Save checkbox states
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                formData.checkboxes[checkbox.id] = checkbox.checked;
+            });
+            
+            // Save signatures
+            signatureCanvases.forEach(id => {
+                const canvas = document.getElementById(id);
+                formData.signatures[id] = canvas.toDataURL();
+            });
+            
+            localStorage.setItem('FSW_Checklist_Enhanced', JSON.stringify(formData));
+        }
+        
+        // Load saved form data
+        function loadFormData() {
+            const savedData = localStorage.getItem('FSW_Checklist_Enhanced');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                
+                // Restore inputs
+                Object.keys(formData.inputs || {}).forEach(key => {
+                    const element = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
+                    if (element) {
+                        element.value = formData.inputs[key];
+                    }
+                });
+                
+                // Restore checkboxes
+                Object.keys(formData.checkboxes || {}).forEach(key => {
+                    const checkbox = document.getElementById(key);
+                    if (checkbox) {
+                        checkbox.checked = formData.checkboxes[key];
+                    }
+                });
+                
+                // Restore signatures
+                Object.keys(formData.signatures || {}).forEach(id => {
+                    const canvas = document.getElementById(id);
+                    if (canvas) {
+                        const ctx = canvas.getContext('2d');
+                        const img = new Image();
+                        img.onload = function() {
+                            ctx.drawImage(img, 0, 0);
+                        };
+                        img.src = formData.signatures[id];
+                    }
+                });
+                
+                // Restore photos
+                if (formData.photos) {
+                    Object.assign(photoData, formData.photos);
+                    Object.keys(photoData).forEach(sectionId => {
+                        const previewGrid = document.getElementById(sectionId + '-preview');
+                        if (previewGrid) {
+                            photoData[sectionId].forEach(photo => {
+                                const photoDiv = document.createElement('div');
+                                photoDiv.className = 'photo-preview';
+                                photoDiv.innerHTML = `
+                                    <img src="${photo.data}" alt="${photo.name}">
+                                    <button class="remove-photo" onclick="removePhoto('${sectionId}', ${photo.id})">×</button>
+                                    <div class="photo-caption">
+                                        <input type="text" value="${photo.caption || ''}" placeholder="Add caption..." onchange="updateCaption('${sectionId}', ${photo.id}, this.value)">
+                                    </div>
+                                `;
+                                previewGrid.appendChild(photoDiv);
+                            });
+                            updatePhotoCount(sectionId);
+                        }
+                    });
+                }
+                
+                updateProgress();
+            }
+        }
+        
+        // Export data function
+        function exportData() {
+            const savedData = localStorage.getItem('FSW_Checklist_Enhanced');
+            if (savedData) {
+                const blob = new Blob([savedData], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `FSW_Inspection_${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+            }
+        }
+        
+        // Save to file function
+        function saveToFile() {
+            saveFormData();
+            alert('Progress saved! Your data is stored in the browser and will be available when you return.');
+        }
+        
+        // Auto-save on input change
+        document.addEventListener('input', saveFormData);
+        document.addEventListener('change', saveFormData);
+        
+        // Load on page load
+        window.addEventListener('load', loadFormData);
+    </script>
+</body>
+</html>

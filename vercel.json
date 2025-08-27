@@ -1,0 +1,12 @@
+{
+  "name": "fsw-inspection-checklist",
+  "version": 2,
+  "builds": [],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "public": true
+}
